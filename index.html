@@ -116,30 +116,26 @@
         const tradeToggleButtons = document.querySelectorAll('.trade-toggle-btn');
         const addTradeButton = document.getElementById('add-trade');
         const ongoingTrades = document.getElementById('ongoing-trades');
-
+        let currentTradeNumber = 1;
+    
         tradeToggleButtons.forEach(button => {
             button.addEventListener('click', () => {
                 // Reset active class for all buttons
                 tradeToggleButtons.forEach(btn => btn.classList.remove('active'));
-
+    
                 // Add active class to clicked button
                 button.classList.add('active');
-
+    
                 // Display corresponding trade box
                 const tradeNumber = button.textContent.split(' ')[1];
-                const tradeBox = document.getElementById(`trade-box-${tradeNumber}`);
-                const allTradeBoxes = document.querySelectorAll('.trade-box');
-                allTradeBoxes.forEach(box => box.style.display = 'none');
-                tradeBox.style.display = 'block';
+                showTradeBox(tradeNumber);
             });
         });
-
+    
         addTradeButton.addEventListener('click', () => {
-            const tradeBoxes = document.querySelectorAll('.trade-box');
-            const lastTradeBox = tradeBoxes[tradeBoxes.length - 1];
-            const lastTradeNumber = parseInt(lastTradeBox.id.split('-')[2]);
-            const newTradeNumber = lastTradeNumber + 1;
-
+            currentTradeNumber++;
+            const newTradeNumber = currentTradeNumber;
+    
             const newTradeBox = document.createElement('div');
             newTradeBox.classList.add('trade-box');
             newTradeBox.id = `trade-box-${newTradeNumber}`;
@@ -148,9 +144,9 @@
                 <input type="text" id="ticker-${newTradeNumber}" value="">
                 <!-- Add other trade inputs here -->
             `;
-
+    
             ongoingTrades.appendChild(newTradeBox);
-
+    
             // Create new toggle button for the added trade
             const newToggleButton = document.createElement('button');
             newToggleButton.classList.add('trade-toggle-btn');
@@ -158,11 +154,36 @@
             newToggleButton.addEventListener('click', () => {
                 tradeToggleButtons.forEach(btn => btn.classList.remove('active'));
                 newToggleButton.classList.add('active');
-                tradeBoxes.forEach(box => box.style.display = 'none');
-                newTradeBox.style.display = 'block';
+                showTradeBox(newTradeNumber);
             });
-
+    
             addTradeButton.before(newToggleButton);
+        });
+    
+        function showTradeBox(tradeNumber) {
+            const tradeBoxes = document.querySelectorAll('.trade-box');
+            tradeBoxes.forEach(box => {
+                if (box.id === `trade-box-${tradeNumber}`) {
+                    box.style.display = 'block';
+                    // Save the input values when showing the trade box
+                    const inputs = box.querySelectorAll('input');
+                    inputs.forEach(input => {
+                        const savedValue = localStorage.getItem(input.id);
+                        if (savedValue) {
+                            input.value = savedValue;
+                        }
+                    });
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+        }
+    
+        // Save input values to local storage when input changes
+        document.querySelectorAll('.trade-box input').forEach(input => {
+            input.addEventListener('input', () => {
+                localStorage.setItem(input.id, input.value);
+            });
         });
     </script>
 </body>
