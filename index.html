@@ -54,6 +54,20 @@
             padding: 10px;
             margin-top: 20px;
         }
+
+        .trade-toggle {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .trade-toggle button {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -84,8 +98,73 @@
             <label for="kill-switch">Kill Switch:</label>
             <button id="kill-switch">Enable</button>
         </div>
+        <div class="trade-toggle">
+            <button class="trade-toggle-btn">Trade 1</button>
+            <button class="trade-toggle-btn">Trade 2</button>
+            <button class="trade-toggle-btn">Trade 3</button>
+            <button id="add-trade">+</button>
+        </div>
+        <div class="trade-box" id="trade-box-1">
+            <label for="ticker-1">Ticker:</label>
+            <input type="text" id="ticker-1" value="">
+            <!-- Add other trade inputs here -->
+        </div>
         <div id="ongoing-trades"></div>
     </div>
+
+    <script>
+        const tradeToggleButtons = document.querySelectorAll('.trade-toggle-btn');
+        const addTradeButton = document.getElementById('add-trade');
+        const ongoingTrades = document.getElementById('ongoing-trades');
+
+        tradeToggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Reset active class for all buttons
+                tradeToggleButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Display corresponding trade box
+                const tradeNumber = button.textContent.split(' ')[1];
+                const tradeBox = document.getElementById(`trade-box-${tradeNumber}`);
+                const allTradeBoxes = document.querySelectorAll('.trade-box');
+                allTradeBoxes.forEach(box => box.style.display = 'none');
+                tradeBox.style.display = 'block';
+            });
+        });
+
+        addTradeButton.addEventListener('click', () => {
+            const tradeBoxes = document.querySelectorAll('.trade-box');
+            const lastTradeBox = tradeBoxes[tradeBoxes.length - 1];
+            const lastTradeNumber = parseInt(lastTradeBox.id.split('-')[2]);
+            const newTradeNumber = lastTradeNumber + 1;
+
+            const newTradeBox = document.createElement('div');
+            newTradeBox.classList.add('trade-box');
+            newTradeBox.id = `trade-box-${newTradeNumber}`;
+            newTradeBox.innerHTML = `
+                <label for="ticker-${newTradeNumber}">Ticker:</label>
+                <input type="text" id="ticker-${newTradeNumber}" value="">
+                <!-- Add other trade inputs here -->
+            `;
+
+            ongoingTrades.appendChild(newTradeBox);
+
+            // Create new toggle button for the added trade
+            const newToggleButton = document.createElement('button');
+            newToggleButton.classList.add('trade-toggle-btn');
+            newToggleButton.textContent = `Trade ${newTradeNumber}`;
+            newToggleButton.addEventListener('click', () => {
+                tradeToggleButtons.forEach(btn => btn.classList.remove('active'));
+                newToggleButton.classList.add('active');
+                tradeBoxes.forEach(box => box.style.display = 'none');
+                newTradeBox.style.display = 'block';
+            });
+
+            addTradeButton.before(newToggleButton);
+        });
+    </script>
 </body>
 
 </html>
