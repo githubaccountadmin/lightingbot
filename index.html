@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseChain Automatic Trading Bot (Lightning Bot)</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .box {
+            border: 2px solid purple;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .trade-box {
+            border: 2px solid purple;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trade-box input {
+            margin-right: 10px;
+        }
+
+        .trade-box button {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        #ongoing-trades {
+            border: 2px solid purple;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>PulseChain Automatic Trading Bot (Lightning Bot)</h1>
+        <div class="box">
+            <label for="ticker">Ticker:</label>
+            <input type="text" id="ticker" value="">
+        </div>
+        <div class="box">
+            <label for="slippage">Slippage:</label>
+            <input type="text" id="slippage" value="">
+        </div>
+        <div class="box">
+            <label for="take-profit">Take Profit (%):</label>
+            <input type="text" id="take-profit" value="">
+        </div>
+        <div class="box">
+            <label for="buy-back">Buy Back Level (%):</label>
+            <input type="text" id="buy-back" value="">
+        </div>
+        <div class="box">
+            <label for="bot-time">Time to Keep Bot Active:</label>
+            <input type="text" id="bot-time" value="">
+        </div>
+        <div class="box">
+            <label for="kill-switch">Kill Switch:</label>
+            <button id="kill-switch">Enable</button>
+        </div>
+        <div id="ongoing-trades"></div>
+    </div>
+</body>
+
+</html>
